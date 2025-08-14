@@ -14,7 +14,10 @@ const highlightSyntax = (code) => {
 }
 
 const App = () => {
-  const [codeContent, setCodeContent] = useState('');
+  const [fileContents, setFileContents] = useState({
+    './index.js': '',
+    './app.js': ''
+  });
   const [activeTab, setActiveTab] = useState('./index.js')
   return (
     <div className="editor-container">
@@ -29,11 +32,13 @@ const App = () => {
       <div className="editor-main">
         <div
           className='code-preview'
-          dangerouslySetInnerHTML={{ __html: highlightSyntax(codeContent) }}
+          dangerouslySetInnerHTML={{ __html: highlightSyntax(fileContents[activeTab]) }}
         />
         <textarea
-          value={codeContent}
-          onChange={(e) => setCodeContent(e.target.value)}
+          value={fileContents[activeTab]}
+          onChange={(e) => setFileContents({
+            ...fileContents, [activeTab]: e.target.value
+          })}
           placeholder='Start typing your code here'
           className='code-input'
         />
